@@ -1,6 +1,6 @@
 %define name	nagios-check_syncrepl
 %define version	20080409
-%define release	%mkrel 2
+%define release	%mkrel 3
 
 Name:		%{name}
 Version:	%{version}
@@ -31,7 +31,7 @@ install -d -m 755 %{buildroot}%{_sysconfdir}/nagios/plugins.d
 cat > %{buildroot}%{_sysconfdir}/nagios/plugins.d/check_syncrepl.cfg <<'EOF'
 define command{
 	command_name	check_syncrepl
-	command_line	%{_libdir}/nagios/plugins/check_syncrepl.py $ARG1$ $ARG2$
+	command_line	%{_libdir}/nagios/plugins/check_syncrepl.py -q -n $ARG1$ $ARG2$ -b $ARG3$
 }
 EOF
 
