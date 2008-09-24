@@ -1,6 +1,6 @@
 %define name	nagios-check_syncrepl
 %define version	20080409
-%define release	%mkrel 1
+%define release	%mkrel 2
 
 Name:		%{name}
 Version:	%{version}
@@ -10,6 +10,7 @@ Group:		Networking/Other
 License:	BSD
 URL:		http://www.nagiosexchange.org/cgi-bin/page.cgi?g=Detailed%2F2477.html
 Source0:	check_syncrepl.py
+Requires:   python-ldap
 BuildRoot:  %{_tmppath}/%{name}-%{version}
 
 %description
