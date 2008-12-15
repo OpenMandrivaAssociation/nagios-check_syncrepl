@@ -1,6 +1,6 @@
 %define name	nagios-check_syncrepl
 %define version	20080409
-%define release	%mkrel 4
+%define release	%mkrel 5
 
 Name:		%{name}
 Version:	%{version}
@@ -12,6 +12,7 @@ URL:		http://www.nagiosexchange.org/cgi-bin/page.cgi?g=Detailed%2F2477.html
 Source0:	check_syncrepl.py
 Patch:      check_syncrepl.py-allow-openldap2.4-CSN-format.patch
 Requires:   python-ldap
+BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}
 
 %description
@@ -27,14 +28,14 @@ cp %{SOURCE0} .
 %install
 rm -rf %{buildroot}
 
-install -d -m 755 %{buildroot}%{_libdir}/nagios/plugins
-install -m 755 check_syncrepl.py %{buildroot}%{_libdir}/nagios/plugins
+install -d -m 755 %{buildroot}%{_datadir}/nagios/plugins
+install -m 755 check_syncrepl.py %{buildroot}%{_datadir}/nagios/plugins
 
 install -d -m 755 %{buildroot}%{_sysconfdir}/nagios/plugins.d
 cat > %{buildroot}%{_sysconfdir}/nagios/plugins.d/check_syncrepl.cfg <<'EOF'
 define command{
 	command_name	check_syncrepl
-	command_line	%{_libdir}/nagios/plugins/check_syncrepl.py -q -n $ARG1$ $ARG2$ -b $ARG3$
+	command_line	%{_datadir}/nagios/plugins/check_syncrepl.py -q -n $ARG1$ $ARG2$ -b $ARG3$
 }
 EOF
 
@@ -43,7 +44,5 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%{_libdir}/nagios/plugins/check_syncrepl.py
+%{_datadir}/nagios/plugins/check_syncrepl.py
 %config(noreplace) %{_sysconfdir}/nagios/plugins.d/check_syncrepl.cfg
-
-
