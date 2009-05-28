@@ -1,6 +1,6 @@
 %define name	nagios-check_syncrepl
 %define version	20080409
-%define release	%mkrel 6
+%define release	%mkrel 7
 
 Name:		%{name}
 Version:	%{version}
@@ -12,6 +12,7 @@ URL:		http://www.nagiosexchange.org/cgi-bin/page.cgi?g=Detailed%2F2477.html
 Source0:	check_syncrepl.py
 Patch0:     check_syncrepl.py-allow-openldap2.4-CSN-format.patch
 Patch1:     check_syncrepl.py-fix-exit-status.patch
+Patch2:     check_syncrepl.py-allow-ignore-higher-CSN.patch
 Requires:   python-ldap
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}
@@ -20,9 +21,11 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}
 Check the open ldap replication via SYNCREPL and python. 
 
 %prep
+%setup -c -T
 cp %{SOURCE0} .
 %patch0 -p 0
 %patch1 -p 0
+%patch2 -p 0
 
 %build
 
