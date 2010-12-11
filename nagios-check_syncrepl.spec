@@ -1,6 +1,6 @@
 %define name	nagios-check_syncrepl
 %define version	20080409
-%define release	%mkrel 7
+%define release	%mkrel 8
 
 Name:		%{name}
 Version:	%{version}
