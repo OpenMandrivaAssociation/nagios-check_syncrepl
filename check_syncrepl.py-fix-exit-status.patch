@@ -1,0 +1,13 @@
+--- check_syncrepl.py~	2009-01-18 20:47:34.000000000 +0100
++++ check_syncrepl.py	2009-01-18 20:49:33.000000000 +0100
+@@ -264,8 +264,10 @@
+     if (options.nagios):
+ 	if (IsInSync):
+     	    print "OK"
++	    exit(0)
+ 	else:
+ 	    print "FAILED"
++	    exit(2)
+ 
+ if __name__ == '__main__':
+     main()

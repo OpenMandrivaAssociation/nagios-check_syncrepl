@@ -1,0 +1,11 @@
+--- check_syncrepl.py~	2008-09-25 16:18:37.000000000 +0200
++++ check_syncrepl.py	2008-09-25 16:19:01.000000000 +0200
+@@ -150,7 +150,7 @@
+     
+   This function returns a datetime object instance
+   """
+-  gentime = re.sub('Z.*$','',contextCSN)
++  gentime = re.sub('(\.\d{6})?Z.*$','',contextCSN)
+   return datetime.datetime.fromtimestamp(time.mktime(time.strptime(gentime,"%Y%m%d%H%M%S")))
+ 
+ def threshold_to_datetime(threshold):

@@ -1,0 +1,66 @@
+--- check_syncrepl.py	2009-05-28 10:33:50.000000000 +0200
++++ /home/guillomovitch/check_syncrepl.py	2009-05-28 10:33:36.000000000 +0200
+@@ -163,7 +163,7 @@
+   nbdays, nbseconds = divmod(threshold, 86400)
+   return datetime.timedelta(days=nbdays, seconds=nbseconds)
+ 
+-def is_insynch(provldapobj, consldapobj, basedn, threshold=None, logger=None):
++def is_insynch(provldapobj, consldapobj, basedn, threshold=None, logger=None, ignore_higher=False):
+   """
+   Check if the consumer is in synch with the provider within the threshold
+     provldapobj - Provider LDAP object instance
+@@ -185,19 +185,23 @@
+       return True
+     else:
+       delta = contextCSN_to_datetime(provcontextCSN) - contextCSN_to_datetime(conscontextCSN)
+-      if threshold:
+-        maxdelta = threshold_to_datetime(eval(threshold))
+-        if logger: logger.debug("Threshold is %s" % maxdelta)
+-        if (abs(delta) <= maxdelta):
+-          if logger:
+-            logger.info("  Consumer in SYNCH within threshold")
+-            logger.info("  Delta is %s" % delta)
+-          return True
+-        else:
+-          if logger: logger.info("  Consumer NOT in SYNCH within threshold")
++      if ignore_higher and delta <= datetime.timedelta(0):
++	if logger: logger.info("  Consumer has higher contextCSN")
++	return True
+       else:
+-        if logger: logger.info("  Consumer NOT in SYNCH")
+-      if logger: logger.info("  Delta is %s" % delta)
++	if threshold:
++	  maxdelta = threshold_to_datetime(eval(threshold))
++	  if logger: logger.debug("Threshold is %s" % maxdelta)
++	  if (abs(delta) <= maxdelta):
++	    if logger:
++	      logger.info("  Consumer in SYNCH within threshold")
++	      logger.info("  Delta is %s" % delta)
++	    return True
++	  else:
++	    if logger: logger.info("  Consumer NOT in SYNCH within threshold")
++	else:
++	  if logger: logger.info("  Consumer NOT in SYNCH")
++	if logger: logger.info("  Delta is %s" % delta)
+   else:
+     if logger: logger.error("  Check failed: at least one contextCSN value is missing")
+   return False
+@@ -242,6 +246,9 @@
+   parser.add_option("-t", "--threshold", dest="threshold",
+                     default=None,
+                     help="""Threshold value in seconds""")
++  parser.add_option("--ignore-higher", dest="ignore_higher", action="store_true",
++                    default=False,
++                    help="""Ignore higher CSN on consumer side""")
+ 
+   (options, args) = parser.parse_args()
+ 
+@@ -258,7 +265,7 @@
+       if logger: logger.info("Checking if consumer %s is in SYNCH with provider" % re.sub("^.*\/\/", "", consumer))
+       ldapcons = ldap_connect(consumer, logger, options.binddn, options.password2)
+       if ldapcons:
+-        IsInSync = IsInSync and is_insynch(ldapprov, ldapcons, options.basedn, options.threshold, logger)
++        IsInSync = IsInSync and is_insynch(ldapprov, ldapcons, options.basedn, options.threshold, logger, options.ignore_higher)
+         ldapcons.unbind_s()
+     ldapprov.unbind_s()
+     if (options.nagios):
