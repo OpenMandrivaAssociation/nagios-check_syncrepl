@@ -1,6 +1,6 @@
 Name:		nagios-check_syncrepl
 Version:	20080409
-Release:	9
+Release:	10
 Summary:	Check the open ldap syncrepl
 Group:		Networking/Other
 License:	BSD
