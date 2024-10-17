@@ -4,7 +4,7 @@ Release:	10
 Summary:	Check the open ldap syncrepl
 Group:		Networking/Other
 License:	BSD
-URL:		http://exchange.nagios.org/directory/Plugins/Network-Protocols/LDAP/Openldap-Syncrepl/details
+URL:		https://exchange.nagios.org/directory/Plugins/Network-Protocols/LDAP/Openldap-Syncrepl/details
 Source0:	check_syncrepl.py
 Patch0:     check_syncrepl.py-allow-openldap2.4-CSN-format.patch
 Patch1:     check_syncrepl.py-fix-exit-status.patch
